@@ -4,12 +4,13 @@ import shutil
 import sys
 import tempfile
 from pathlib import Path
+import traceback
 
 MOD_RS = "mod.rs"
 INPUT_TXT = "input.txt"
 YEARS_DIR = "src/years"
 
-YEAR_MOD_TEMPLATE = """use crate::utils::{{file_reader::StdFileReader, solver::Solver}};
+YEAR_MOD_TEMPLATE = """use crate::{{solver::solver::Solver, utils::file_reader::StdFileReader}};
 
 {mod_declarations}
 
@@ -38,7 +39,7 @@ MATCH_CASE_TEMPLATE = """        {day} => {{
             solver.solve();
         }}"""
 
-DAY_MOD_TEMPLATE = """use crate::utils::{{file_reader::FileReader, solver::Solver}};
+DAY_MOD_TEMPLATE = """use crate::{{solver::solver::Solver, utils::file_reader::FileReader}};
 
 pub struct Day{day_padded} {{
     data: String,
@@ -52,7 +53,7 @@ impl Solver for Day{day_padded} {{
 
     fn part_one_solution(&self) -> u32 {{
         let is_empty = self.data.is_empty();
-        if is_empty { 0 } else { 1 }
+        if is_empty {{ 0 }} else {{ 1 }}
     }}
 
     fn part_two_solution(&self) -> u32 {{
@@ -190,6 +191,9 @@ def apply_changes(file_mappings: dict[Path, Path]) -> None:
 
 def validate_input(year: str, day: str) -> tuple[int, int]:
     """Validate and convert year and day inputs."""
+    year = year.strip()
+    day = day.strip()
+
     if not year.isdigit() or len(year) != 4:
         print("Error: Year must be 4 digits (e.g., 2025)", file=sys.stderr)
         sys.exit(1)
@@ -221,6 +225,7 @@ def main() -> None:
         print("Success")
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
         print(f"Temporary files preserved in: {temp_dir}", file=sys.stderr)
         sys.exit(1)
 

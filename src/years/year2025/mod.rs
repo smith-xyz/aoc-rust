@@ -1,4 +1,4 @@
-use crate::utils::{file_reader::StdFileReader, solver::Solver};
+use crate::{solver::solver::Solver, utils::file_reader::StdFileReader};
 
 pub mod day01;
 

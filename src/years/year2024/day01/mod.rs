@@ -1,4 +1,4 @@
-use crate::utils::{file_reader::FileReader, solver::Solver};
+use crate::{solver::solver::Solver, utils::file_reader::FileReader};
 
 pub struct Day01 {
     data: String,
