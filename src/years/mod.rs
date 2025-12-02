@@ -1,5 +1,5 @@
 pub mod year2024;
-pub mod year2025; // When you add it
+pub mod year2025;
 
 pub fn run_day(year: u32, day: u32) {
     match year {
