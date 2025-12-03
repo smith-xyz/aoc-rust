@@ -7,7 +7,7 @@ pub struct Day01 {
     data: String,
 }
 
-impl Solver for Day01 {
+impl Solver<u32> for Day01 {
     fn new<R: FileReader>(reader: &R, file_path: &str) -> Result<Self, String> {
         let data = reader.read_file(file_path)?;
         Ok(Day01 { data })

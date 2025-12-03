@@ -1,6 +1,7 @@
 use crate::{solver::solver::Solver, utils::file_reader::StdFileReader};
 
 pub mod day01;
+pub mod day02;
 
 pub fn run_day(day: u32) {
     let reader = StdFileReader;
@@ -8,6 +9,11 @@ pub fn run_day(day: u32) {
         1 => {
             let solver =
                 day01::Day01::from_default_path(&reader, 2025, day).expect("Failed to load input");
+            solver.solve();
+        }
+        2 => {
+            let solver =
+                day02::Day02::from_default_path(&reader, 2025, day).expect("Failed to load input");
             solver.solve();
         }
         _ => println!("Day {} not implemented", day),
