@@ -45,7 +45,7 @@ pub struct Day{day_padded} {{
     data: String,
 }}
 
-impl Solver for Day{day_padded} {{
+impl Solver<u32> for Day{day_padded} {{
     fn new<R: FileReader>(reader: &R, file_path: &str) -> Result<Self, String> {{
         let data = reader.read_file(file_path)?;
         Ok(Day{day_padded} {{ data }})
