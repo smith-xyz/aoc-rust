@@ -23,7 +23,7 @@ impl Solver<u64> for Day02 {
         Ok(Day02 { id_ranges: parsed })
     }
 
-    fn part_one_solution(&self) -> u64 {
+    fn part_one_solution(&mut self) -> u64 {
         self.id_ranges
             .iter()
             .flat_map(|(start, end)| *start..=*end)
@@ -31,7 +31,7 @@ impl Solver<u64> for Day02 {
             .sum()
     }
 
-    fn part_two_solution(&self) -> u64 {
+    fn part_two_solution(&mut self) -> u64 {
         self.id_ranges
             .iter()
             .flat_map(|(start, end)| *start..=*end)

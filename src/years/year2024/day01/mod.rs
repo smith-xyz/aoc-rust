@@ -10,12 +10,12 @@ impl Solver<u32> for Day01 {
         Ok(Day01 { data })
     }
 
-    fn part_one_solution(&self) -> u32 {
+    fn part_one_solution(&mut self) -> u32 {
         let is_empty = self.data.is_empty();
         if is_empty { 0 } else { 1 }
     }
 
-    fn part_two_solution(&self) -> u32 {
+    fn part_two_solution(&mut self) -> u32 {
         0
     }
 }

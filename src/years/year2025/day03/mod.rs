@@ -14,7 +14,7 @@ impl Solver<u64> for Day03 {
         Ok(Day03 { data })
     }
 
-    fn part_one_solution(&self) -> u64 {
+    fn part_one_solution(&mut self) -> u64 {
         let mut largest: Vec<u64> = vec![];
         for bank in self.data.clone() {
             largest.push(find_largest_n_digit(&bank, 2));
@@ -22,7 +22,7 @@ impl Solver<u64> for Day03 {
         largest.iter().sum()
     }
 
-    fn part_two_solution(&self) -> u64 {
+    fn part_two_solution(&mut self) -> u64 {
         let mut largest: Vec<u64> = vec![];
         for bank in self.data.clone() {
             largest.push(find_largest_n_digit(&bank, 12));

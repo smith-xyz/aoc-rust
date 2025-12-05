@@ -13,13 +13,13 @@ impl Solver<u32> for Day01 {
         Ok(Day01 { data })
     }
 
-    fn part_one_solution(&self) -> u32 {
+    fn part_one_solution(&mut self) -> u32 {
         let mut combination_safe: CombinationSafe = CombinationSafe::default();
         let dials: Vec<&str> = self.data.split("\n").collect();
         combination_safe.process_dials(&dials).0 as u32
     }
 
-    fn part_two_solution(&self) -> u32 {
+    fn part_two_solution(&mut self) -> u32 {
         let mut combination_safe: CombinationSafe = CombinationSafe::default();
         let dials: Vec<&str> = self.data.split("\n").collect();
         (|(a, b)| (a + b) as u32)(combination_safe.process_dials(&dials))

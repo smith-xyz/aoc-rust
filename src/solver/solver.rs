@@ -19,10 +19,10 @@ where
     where
         Self: Sized;
 
-    fn part_one_solution(&self) -> Output;
-    fn part_two_solution(&self) -> Output;
+    fn part_one_solution(&mut self) -> Output;
+    fn part_two_solution(&mut self) -> Output;
 
-    fn solve(&self) {
+    fn solve(&mut self) {
         use std::time::Instant;
 
         let start = Instant::now();
