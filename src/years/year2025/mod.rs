@@ -4,6 +4,7 @@ pub mod day01;
 pub mod day02;
 pub mod day03;
 pub mod day04;
+pub mod day05;
 
 pub fn run_day(day: u32) {
     let reader = StdFileReader;
@@ -26,6 +27,11 @@ pub fn run_day(day: u32) {
         4 => {
             let mut solver =
                 day04::Day04::from_default_path(&reader, 2025, day).expect("Failed to load input");
+            solver.solve();
+        }
+        5 => {
+            let mut solver =
+                day05::Day05::from_default_path(&reader, 2025, day).expect("Failed to load input");
             solver.solve();
         }
         _ => println!("Day {} not implemented", day),
