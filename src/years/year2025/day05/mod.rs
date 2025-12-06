@@ -10,18 +10,18 @@ pub struct Day05 {
 impl Solver<u64> for Day05 {
     fn new<R: FileReader>(reader: &R, file_path: &str) -> Result<Self, String> {
         let data = reader.read_file(file_path)?;
-        let mut ranges: Vec<RangeInclusive<u64>> = Vec::new();
-        let mut ingredient_ids: Vec<u64> = Vec::new();
-
-        data.split("\n").for_each(|s| {
-            if s.contains("-") {
-                let values: Vec<u64> = s.split("-").map(|x| x.parse::<u64>().unwrap()).collect();
-                ranges.push(values[0]..=values[1]);
-            }
-            if s.parse::<u64>().is_ok() {
-                ingredient_ids.push(s.parse::<u64>().unwrap());
-            }
-        });
+        let (ranges, ingredient_ids): (Vec<_>, Vec<_>) =
+            data.lines()
+                .fold((Vec::new(), Vec::new()), |(mut ranges, mut ids), s| {
+                    if let Some((start, end)) = s.split_once("-") {
+                        if let (Ok(start), Ok(end)) = (start.parse::<u64>(), end.parse::<u64>()) {
+                            ranges.push(start..=end);
+                        }
+                    } else if let Ok(id) = s.parse::<u64>() {
+                        ids.push(id);
+                    }
+                    (ranges, ids)
+                });
 
         Ok(Day05 {
             ranges,
