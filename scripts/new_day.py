@@ -34,7 +34,7 @@ pub fn run_day(year: u32, day: u32) {{
 """
 
 MATCH_CASE_TEMPLATE = """        {day} => {{
-            let solver =
+            let mut solver =
                 day{day_padded}::Day{day_padded}::from_default_path(&reader, {year}, day).expect("Failed to load input");
             solver.solve();
         }}"""
@@ -51,12 +51,12 @@ impl Solver<u32> for Day{day_padded} {{
         Ok(Day{day_padded} {{ data }})
     }}
 
-    fn part_one_solution(&self) -> u32 {{
+    fn part_one_solution(&mut self) -> u32 {{
         let is_empty = self.data.is_empty();
         if is_empty {{ 0 }} else {{ 1 }}
     }}
 
-    fn part_two_solution(&self) -> u32 {{
+    fn part_two_solution(&mut self) -> u32 {{
         0
     }}
 }}
