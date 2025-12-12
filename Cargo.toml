@@ -10,3 +10,5 @@ path = "src/main.rs"
 [dependencies]
 clap = { version = "4", features = ["derive"] }
 regex = "1.12.2"
+itertools = "0.12"
+rayon = "1.10"

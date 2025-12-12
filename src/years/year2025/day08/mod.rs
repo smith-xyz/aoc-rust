@@ -1,30 +1,23 @@
-use std::{
-    cmp::Reverse,
-    collections::{BinaryHeap, HashSet},
-    i128,
+use std::{cmp::Reverse, collections::HashSet, i128};
+
+use crate::{
+    solver::solver::Solver,
+    utils::{
+        file_reader::FileReader,
+        math_utils::{Point3D, calculate_euclidean_distance_squared},
+        memory_utils::create_memory_heap_from_vec,
+    },
 };
-
-use crate::{solver::solver::Solver, utils::file_reader::FileReader};
-
-type CartesianPoint = (i128, i128, i128);
 
 pub struct Day08 {
     largest_three_circuits: i128,
     last_connection_product: i128,
 }
 
-// just so I don't have to use f64
-fn calculate_euclidean_distance_squared(pos_1: CartesianPoint, pos_2: CartesianPoint) -> i128 {
-    let dx = pos_1.0 - pos_2.0;
-    let dy = pos_1.1 - pos_2.1;
-    let dz = pos_1.2 - pos_2.2;
-    dx * dx + dy * dy + dz * dz
-}
-
 impl Solver<i128> for Day08 {
     fn new<R: FileReader>(reader: &R, file_path: &str) -> Result<Self, String> {
         let data = reader.read_file(file_path)?;
-        let coordinates: Vec<CartesianPoint> = data
+        let coordinates: Vec<Point3D> = data
             .split("\n")
             .map(|s| {
                 let arr: Vec<i128> = s.split(",").map(|x| x.parse::<i128>().unwrap()).collect();
@@ -32,15 +25,12 @@ impl Solver<i128> for Day08 {
             })
             .collect();
 
-        let mut heap = BinaryHeap::new();
-        for i in 0..coordinates.len() {
-            for j in (i + 1)..coordinates.len() {
-                let distance = calculate_euclidean_distance_squared(coordinates[i], coordinates[j]);
-                heap.push(Reverse((distance, i, j)));
-            }
-        }
-        let mut circuits: Vec<HashSet<CartesianPoint>> = Vec::new();
+        let mut heap = create_memory_heap_from_vec(&coordinates, |a, b, i, j| {
+            let distance = calculate_euclidean_distance_squared(*a, *b);
+            Reverse((distance, i, j))
+        });
 
+        let mut circuits: Vec<HashSet<Point3D>> = Vec::new();
         let mut pairs_processed = 0;
         while pairs_processed < 1000 {
             if let Some(Reverse((_, i, j))) = heap.pop() {
@@ -100,7 +90,7 @@ impl Solver<i128> for Day08 {
         let largest_three_circuits: usize = circuits.iter().take(3).map(|c| c.len()).product();
 
         // === Part 2: Continue until 1 circuit ===
-        let mut last_merged_pair: Option<(CartesianPoint, CartesianPoint)> = None;
+        let mut last_merged_pair: Option<(Point3D, Point3D)> = None;
         while circuits.len() > 1
             || circuits.iter().map(|c| c.len()).sum::<usize>() < coordinates.len()
         {
@@ -174,19 +164,13 @@ impl Solver<i128> for Day08 {
     }
 }
 
-fn coordinate_in_same_circuit(
-    circuits: &[HashSet<CartesianPoint>],
-    coords: (CartesianPoint, CartesianPoint),
-) -> bool {
+fn coordinate_in_same_circuit(circuits: &[HashSet<Point3D>], coords: (Point3D, Point3D)) -> bool {
     circuits
         .iter()
         .find(|c| c.contains(&coords.0) && c.contains(&coords.1))
         .is_some()
 }
 
-fn coordinate_junction_box(
-    circuits: &[HashSet<CartesianPoint>],
-    coord: CartesianPoint,
-) -> Option<usize> {
+fn coordinate_junction_box(circuits: &[HashSet<Point3D>], coord: Point3D) -> Option<usize> {
     circuits.iter().position(|circuit| circuit.contains(&coord))
 }
