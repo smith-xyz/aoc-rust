@@ -8,11 +8,22 @@ where
         format!("src/years/year{}/day{:02}/input.txt", year, day)
     }
 
+    fn test_input_path(year: u32, day: u32) -> String {
+        format!("src/years/year{}/day{:02}/input_test.txt", year, day)
+    }
+
     fn from_default_path<R: FileReader>(reader: &R, year: u32, day: u32) -> Result<Self, String>
     where
         Self: Sized,
     {
         Self::new(reader, &Self::input_path(year, day))
+    }
+
+    fn from_test_path<R: FileReader>(reader: &R, year: u32, day: u32) -> Result<Self, String>
+    where
+        Self: Sized,
+    {
+        Self::new(reader, &Self::test_input_path(year, day))
     }
 
     fn new<R: FileReader>(reader: &R, file_path: &str) -> Result<Self, String>
