@@ -12,6 +12,11 @@ where
         format!("src/years/year{}/day{:02}/input_test.txt", year, day)
     }
 
+    // in case the test input is different for part 2
+    fn test_input_path_part_two(year: u32, day: u32) -> String {
+        format!("src/years/year{}/day{:02}/input_test_2.txt", year, day)
+    }
+
     fn from_default_path<R: FileReader>(reader: &R, year: u32, day: u32) -> Result<Self, String>
     where
         Self: Sized,
@@ -24,6 +29,17 @@ where
         Self: Sized,
     {
         Self::new(reader, &Self::test_input_path(year, day))
+    }
+
+    fn from_test_path_part_two<R: FileReader>(
+        reader: &R,
+        year: u32,
+        day: u32,
+    ) -> Result<Self, String>
+    where
+        Self: Sized,
+    {
+        Self::new(reader, &Self::test_input_path_part_two(year, day))
     }
 
     fn new<R: FileReader>(reader: &R, file_path: &str) -> Result<Self, String>
@@ -40,11 +56,12 @@ where
         let part1 = self.part_one_solution();
         let part1_time = start.elapsed();
 
+        println!("Part 1: {} (took {:?})", part1, part1_time);
+
         let start = Instant::now();
         let part2 = self.part_two_solution();
         let part2_time = start.elapsed();
 
-        println!("Part 1: {} (took {:?})", part1, part1_time);
         println!("Part 2: {} (took {:?})", part2, part2_time);
     }
 }

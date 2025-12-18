@@ -8,6 +8,7 @@ import traceback
 
 MOD_RS = "mod.rs"
 INPUT_TXT = "input.txt"
+INPUT_TEST_TXT = "input_test.txt"
 YEARS_DIR = "src/years"
 
 YEAR_MOD_TEMPLATE = """use crate::{{solver::solver::Solver, utils::file_reader::StdFileReader}};
@@ -58,6 +59,27 @@ impl Solver<u32> for Day{day_padded} {{
 
     fn part_two_solution(&mut self) -> u32 {{
         0
+    }}
+}}
+
+#[cfg(test)]
+mod tests {{
+    use crate::utils::file_reader::StdFileReader;
+
+    use super::*;
+
+    #[test]
+    fn test_part_one() {{
+        let reader = StdFileReader;
+        let mut solver = Day{day_padded}::from_test_path(&reader, {year}, {day_padded}).expect("Failed to load input");
+        assert_eq!(solver.part_one_solution(), 1)
+    }}
+
+    #[test]
+    fn test_part_two() {{
+        let reader = StdFileReader;
+        let mut solver = Day{day_padded}::from_test_path(&reader, {year}, {day_padded}).expect("Failed to load input");
+        assert_eq!(solver.part_two_solution(), 0)
     }}
 }}
 """
@@ -118,9 +140,9 @@ def generate_years_mod_content(years: list[int]) -> str:
     )
 
 
-def generate_day_mod_content(day_padded: str) -> str:
+def generate_day_mod_content(day_padded: str, year: str) -> str:
     """Generate day mod.rs content."""
-    return DAY_MOD_TEMPLATE.format(day_padded=day_padded)
+    return DAY_MOD_TEMPLATE.format(day_padded=day_padded, year=year)
 
 
 def build_in_temp(
@@ -164,11 +186,13 @@ def build_in_temp(
 
     if not day_exists:
         temp_day_dir.mkdir(parents=True, exist_ok=True)
-        day_mod_content = generate_day_mod_content(day_padded)
+        day_mod_content = generate_day_mod_content(day_padded, str(year))
         (temp_day_dir / MOD_RS).write_text(day_mod_content)
         (temp_day_dir / INPUT_TXT).touch()
+        (temp_day_dir / INPUT_TEST_TXT).touch()
         file_mappings[day_dir / MOD_RS] = temp_day_dir / MOD_RS
         file_mappings[day_dir / INPUT_TXT] = temp_day_dir / INPUT_TXT
+        file_mappings[day_dir / INPUT_TEST_TXT] = temp_day_dir / INPUT_TEST_TXT
 
     existing_years = scan_years(years_dir)
     if year not in existing_years:
